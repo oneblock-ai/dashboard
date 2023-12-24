@@ -1,0 +1,56 @@
+name: Build
+on:
+  push:
+    branches:
+      - main
+      - 'release-*'
+  workflow_dispatch:
+    environment:
+      description: 'Build resources for a specific environment'
+      type: environment
+      required: true 
+
+jobs:
+  hosted-master:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Build
+        run: ./scripts/build-hosted
+      - uses: manyuanrong/setup-ossutil@v2.0
+        with:
+          endpoint: "oss-cn-beijing.aliyuncs.com"
+          access-key-id: ${{ secrets.ALIYUN_ACCESS_KEY }}
+          access-key-secret: ${{ secrets.ALIYUN_SECRET_KEY }}
+      - run: ossutil cp -rf dist/ oss://1block/dashboard/
+
+  embedded-master:
+    runs-on: ubuntu-latest
+    env:
+      TARBALL: latest.tar.gz
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Build Embedded
+        run: ./scripts/build-embedded
+
+      - uses: manyuanrong/setup-ossutil@v2.0
+        with:
+          endpoint: "oss-cn-beijing.aliyuncs.com"
+          access-key-id: ${{ secrets.ALIYUN_ACCESS_KEY }}
+          access-key-secret: ${{ secrets.ALIYUN_SECRET_KEY }}
+      - run: ossutil cp -rf dist/$TARBALL oss://1block/dashboard/
