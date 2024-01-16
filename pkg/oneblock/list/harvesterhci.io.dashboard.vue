@@ -25,7 +25,6 @@ import DashboardMetrics from '@shell/components/DashboardMetrics';
 import metricPoller from '@shell/mixins/metric-poller';
 import { allDashboardsExist } from '@shell/utils/grafana';
 import { isEmpty } from '@shell/utils/object';
-import HarvesterUpgrade from '../components/HarvesterUpgrade';
 import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../config/harvester';
 
 dayjs.extend(utc);
@@ -121,7 +120,6 @@ export default {
     Loading,
     HardwareResourceGauge,
     SortableTable,
-    HarvesterUpgrade,
     ResourceSummary,
     Tabbed,
     Tab,
@@ -590,8 +588,6 @@ export default {
 <template>
   <Loading v-if="$fetchState.pending || !currentCluster" />
   <section v-else>
-    <HarvesterUpgrade />
-
     <div
       class="cluster-dashboard-glance"
     >

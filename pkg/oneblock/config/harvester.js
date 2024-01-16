@@ -80,7 +80,7 @@ export function init($plugin, store) {
     };
 
     store.dispatch('setIsSingleProduct', {
-      logo:              require(`@shell/assets/images/providers/harvester.svg`),
+      logo:              require(`@shell/assets/images/pl/oneblock.png`),
       productNameKey:    'harvester.productLabel',
       getVersionInfo:    (store) => store.getters[`${ PRODUCT_NAME }/byId`]?.(OB.SETTING, 'server-version')?.value || 'unknown',
       afterLoginRoute:   home,

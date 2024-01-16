@@ -4,7 +4,6 @@ import { RadioGroup } from '@components/Form/Radio';
 import { Checkbox } from '@components/Form/Checkbox';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
-import UpgradeInfo from '../../../../components/UpgradeInfo';
 
 import { OB } from '../../../../types';
 import { exceptionToErrorsArray } from '@shell/utils/error';
@@ -22,7 +21,7 @@ const UPLOAD = 'upload';
 export default {
   name:       'HarvesterAirgapUpgrade',
   components: {
-    Checkbox, CruResource, LabeledSelect, LabeledInput, RadioGroup, UpgradeInfo
+    Checkbox, CruResource, LabeledSelect, LabeledInput, RadioGroup
   },
 
   async fetch() {
@@ -242,8 +241,6 @@ export default {
           t('harvester.upgradePage.selectExisting'),
         ]"
       />
-
-      <UpgradeInfo />
 
       <div v-if="uploadImage">
         <LabeledInput

@@ -368,7 +368,8 @@ export default {
           v-if="isSingleProduct && !isRancherInHarvester"
           class="product-name"
         >
-          {{ t(isSingleProduct.productNameKey) }}
+          <!-- {{ t(isSingleProduct.productNameKey) }} -->
+          OneBlock
         </div>
         <template v-else>
           <ClusterProviderIcon

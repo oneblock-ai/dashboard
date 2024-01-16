@@ -21,6 +21,4 @@ export default function(plugin: IPlugin) {
   plugin.addDashboardStore(harvesterStore.config.namespace, harvesterStore.specifics, harvesterStore.config, harvesterStore.init);
 
   plugin.validators = customValidators;
-
-  plugin.register('component', 'NavHeaderRight', () => import(/* webpackChunkName: "pkg/oneblock/components" */ `./components/HarvesterUpgradeHeader.vue`));
 }
