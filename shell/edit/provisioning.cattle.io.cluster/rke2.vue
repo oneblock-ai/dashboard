@@ -15,7 +15,7 @@ import {
   SCHEMA,
   DEFAULT_WORKSPACE,
   SECRET,
-  HCI,
+  OB,
 } from '@shell/config/types';
 import { _CREATE, _EDIT, _VIEW } from '@shell/config/query-params';
 
@@ -61,7 +61,7 @@ import Registries from '@shell/edit/provisioning.cattle.io.cluster/tabs/registri
 import AddOnConfig from '@shell/edit/provisioning.cattle.io.cluster/tabs/AddOnConfig';
 import Advanced from '@shell/edit/provisioning.cattle.io.cluster/tabs/Advanced';
 
-const HARVESTER = 'harvester';
+const HARVESTER = 'oneblock';
 const HARVESTER_CLOUD_PROVIDER = 'harvester-cloud-provider';
 const NETBIOS_TRUNCATION_LENGTH = 15;
 
@@ -1816,7 +1816,7 @@ export default {
 
       if (clusterId && clusterType === 'imported') {
         const url = `/k8s/clusters/${ clusterId }/v1`;
-        const res = await this.$store.dispatch('cluster/request', { url: `${ url }/${ HCI.SETTING }s` });
+        const res = await this.$store.dispatch('cluster/request', { url: `${ url }/${ OB.SETTING }s` });
 
         const version = (res?.data || []).find((s) => s.id === 'harvester-csi-ccm-versions');
 

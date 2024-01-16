@@ -12,7 +12,7 @@ import {
   CAPI,
   POD,
   LIST_WORKLOAD_TYPES,
-  HCI,
+  OB,
 } from '@shell/config/types';
 import Tab from '@shell/components/Tabbed/Tab';
 import CreateEditView from '@shell/mixins/create-edit-view';
@@ -155,8 +155,8 @@ export default {
       fetches.rancherClusters = this.$store.dispatch('management/findAll', { type: CAPI.RANCHER_CLUSTER });
     }
 
-    if (this.$store.getters[`management/canList`](HCI.HARVESTER_CONFIG)) {
-      fetches.harvesterConfigs = this.$store.dispatch('management/findAll', { type: HCI.HARVESTER_CONFIG });
+    if (this.$store.getters[`management/canList`](OB.HARVESTER_CONFIG)) {
+      fetches.harvesterConfigs = this.$store.dispatch('management/findAll', { type: OB.HARVESTER_CONFIG });
     }
 
     await allHash(fetches);

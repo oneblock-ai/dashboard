@@ -9,7 +9,7 @@ import {
   FLEET,
   MANAGEMENT,
   NAMESPACE, NORMAN,
-  UI, VIRTUAL_HARVESTER_PROVIDER, HCI
+  UI, VIRTUAL_HARVESTER_PROVIDER, OB
 } from '@shell/config/types';
 import { BY_TYPE } from '@shell/plugins/dashboard-store/classify';
 import Steve from '@shell/plugins/steve';
@@ -755,7 +755,7 @@ export const actions = {
     const localCluster = res.clusters?.find((c) => c.id === 'local');
 
     if (localCluster?.isHarvester) {
-      const harvesterSetting = await dispatch('cluster/findAll', { type: HCI.SETTING, opt: { url: `/v1/harvester/${ HCI.SETTING }s` } });
+      const harvesterSetting = await dispatch('cluster/findAll', { type: OB.SETTING, opt: { url: `/v1/harvester/${ OB.SETTING }s` } });
       const rancherManagerSupport = harvesterSetting.find((setting) => setting.id === 'rancher-manager-support');
       const isRancherInHarvester = (rancherManagerSupport?.value || rancherManagerSupport?.default) === 'true';
 
@@ -959,7 +959,7 @@ export const actions = {
     });
 
     if (getters['currentCluster'] && getters['currentCluster'].isHarvester) {
-      await dispatch('cluster/findAll', { type: HCI.SETTING });
+      await dispatch('cluster/findAll', { type: OB.SETTING });
     }
 
     commit('clusterReady', true);

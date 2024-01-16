@@ -136,7 +136,7 @@ export const ANNOTATIONS_TO_FOLD = [
   /^objectset\.rio\.cattle\.io\/.*$/,
 ];
 
-export const HCI = {
+export const OB = {
   CLOUD_INIT:          'harvesterhci.io/cloud-init-template',
   CLOUD_PROVIDER_IPAM: 'cloudprovider.harvesterhci.io/ipam',
   NETWORK_ROUTE:       'network.harvesterhci.io/route',

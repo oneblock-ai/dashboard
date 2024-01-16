@@ -13,7 +13,7 @@ import { LEGACY } from '@shell/store/features';
 import semver from 'semver';
 import { _EDIT } from '@shell/config/query-params';
 
-const HARVESTER = 'harvester';
+const HARVESTER = 'oneblock';
 
 export default {
   components: {

@@ -12,7 +12,7 @@ import { sortBy } from '@shell/utils/sort';
 import { ucFirst } from '@shell/utils/string';
 
 import {
-  HCI, CATALOG, UI, SCHEMA, COUNT
+  OB, CATALOG, UI, SCHEMA, COUNT
 } from '@shell/config/types';
 import { HARVESTER_NAME as HARVESTER } from '@shell/config/features';
 import { NAME as EXPLORER } from '@shell/config/product/explorer';
@@ -151,7 +151,7 @@ export default {
     },
 
     harvesterVersion() {
-      return this.$store.getters['cluster/byId'](HCI.SETTING, 'server-version')?.value || 'unknown';
+      return this.$store.getters['cluster/byId'](OB.SETTING, 'server-version')?.value || 'unknown';
     },
 
     showProductFooter() {

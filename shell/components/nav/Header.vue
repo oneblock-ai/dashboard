@@ -147,7 +147,7 @@ export default {
     },
 
     showImportYaml() {
-      return this.currentProduct?.inStore !== 'harvester';
+      return this.currentProduct?.inStore !== 'oneblock';
     },
 
     nameTooltip() {

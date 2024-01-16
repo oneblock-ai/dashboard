@@ -5,17 +5,17 @@ import semver from 'semver';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
 import { _CREATE } from '@shell/config/query-params';
 import { get } from '@shell/utils/object';
-import { HCI as HCI_LABELS_ANNOTATIONS } from '@shell/config/labels-annotations';
+import { OB as OB_LABELS_ANNOTATIONS } from '@shell/config/labels-annotations';
 import { SERVICE } from '@shell/config/types';
 import { allHash } from '@shell/utils/promise';
 
 const HARVESTER_ADD_ON_CONFIG = [{
   variableName: 'ipam',
-  key:          HCI_LABELS_ANNOTATIONS.CLOUD_PROVIDER_IPAM,
+  key:          OB_LABELS_ANNOTATIONS.CLOUD_PROVIDER_IPAM,
   default:      'dhcp'
 }, {
   variableName: 'sharedService',
-  key:          HCI_LABELS_ANNOTATIONS.PRIMARY_SERVICE,
+  key:          OB_LABELS_ANNOTATIONS.PRIMARY_SERVICE,
   default:      ''
 }];
 
@@ -69,7 +69,7 @@ export default {
 
     let showShareIP;
 
-    if (this.value.metadata.annotations[HCI_LABELS_ANNOTATIONS.PRIMARY_SERVICE]) {
+    if (this.value.metadata.annotations[OB_LABELS_ANNOTATIONS.PRIMARY_SERVICE]) {
       showShareIP = true;
     } else {
       showShareIP = false;
@@ -157,9 +157,9 @@ export default {
       });
 
       if (this.showShareIP) {
-        delete this.value.metadata.annotations[HCI_LABELS_ANNOTATIONS.CLOUD_PROVIDER_IPAM];
+        delete this.value.metadata.annotations[OB_LABELS_ANNOTATIONS.CLOUD_PROVIDER_IPAM];
       } else {
-        delete this.value.metadata.annotations[HCI_LABELS_ANNOTATIONS.PRIMARY_SERVICE];
+        delete this.value.metadata.annotations[OB_LABELS_ANNOTATIONS.PRIMARY_SERVICE];
       }
     },
 

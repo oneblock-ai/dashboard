@@ -1,5 +1,5 @@
 import { RBAC } from '@shell/config/types';
-import { HCI } from '@shell/config/labels-annotations';
+import { OB } from '@shell/config/labels-annotations';
 import isEmpty from 'lodash/isEmpty';
 import has from 'lodash/has';
 import isUrl from 'is-url';
@@ -439,7 +439,7 @@ export default function(t: Translation, { key = 'Value' }: ValidationOptions): {
   };
 
   const fileRequired: Validator = (val = {}) => {
-    if (!val[HCI.IMAGE_NAME]) {
+    if (!val[OB.IMAGE_NAME]) {
       return t('validation.required', { key: t('harvester.image.fileName') });
     }
   };

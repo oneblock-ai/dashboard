@@ -3,7 +3,7 @@ import {
   CAPI,
   CATALOG,
   NORMAN,
-  HCI,
+  OB,
   MANAGEMENT
 } from '@shell/config/types';
 import { MULTI_CLUSTER } from '@shell/store/features';
@@ -61,7 +61,7 @@ export function init(store) {
   ]);
 
   configureType(CAPI.RANCHER_CLUSTER, {
-    showListMasthead: false, namespaced: false, alias: [HCI.CLUSTER]
+    showListMasthead: false, namespaced: false, alias: [OB.CLUSTER]
   });
   // configureType(NORMAN.CLOUD_CREDENTIAL, { showListMasthead: false, namespaced: false });
   weightType(CAPI.RANCHER_CLUSTER, 100, true);

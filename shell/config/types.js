@@ -283,7 +283,7 @@ export const VIRTUAL_TYPES = {
 };
 
 // harvester
-export const HCI = {
+export const OB = {
   CLUSTER:          'harvesterhci.io.management.cluster',
   DASHBOARD:        'harvesterhci.io.dashboard',
   IMAGE:            'harvesterhci.io.virtualmachineimage',
@@ -291,7 +291,7 @@ export const HCI = {
   HARVESTER_CONFIG: 'rke-machine-config.cattle.io.harvesterconfig',
 };
 
-export const VIRTUAL_HARVESTER_PROVIDER = 'harvester';
+export const VIRTUAL_HARVESTER_PROVIDER = 'oneblock';
 
 export const ADDRESSES = {
   HOSTNAME:    'Hostname',

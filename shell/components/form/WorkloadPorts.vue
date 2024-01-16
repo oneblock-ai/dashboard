@@ -6,7 +6,7 @@ import { removeAt, findBy } from '@shell/utils/array';
 import { clone } from '@shell/utils/object';
 import { LabeledInput } from '@components/Form/LabeledInput';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
-import { HCI as HCI_LABELS_ANNOTATIONS } from '@shell/config/labels-annotations';
+import { OB as OB_LABELS_ANNOTATIONS } from '@shell/config/labels-annotations';
 import { isHarvesterSatisfiesVersion } from '@shell/utils/cluster';
 import { HARVESTER_NAME as HARVESTER } from '@shell/config/features';
 import { CAPI, SERVICE } from '@shell/config/types';
@@ -136,7 +136,7 @@ export default {
     },
 
     serviceWithIpam() {
-      return this.services.find((s) => s?.metadata?.annotations[HCI_LABELS_ANNOTATIONS.CLOUD_PROVIDER_IPAM]);
+      return this.services.find((s) => s?.metadata?.annotations[OB_LABELS_ANNOTATIONS.CLOUD_PROVIDER_IPAM]);
     },
 
     showIpam() {
@@ -252,7 +252,7 @@ export default {
 
     setIpam(row) {
       if (this.serviceWithIpam && row._serviceType === 'LoadBalancer' && row.protocol === 'TCP') {
-        row._ipam = this.serviceWithIpam?.metadata?.annotations[HCI_LABELS_ANNOTATIONS.CLOUD_PROVIDER_IPAM];
+        row._ipam = this.serviceWithIpam?.metadata?.annotations[OB_LABELS_ANNOTATIONS.CLOUD_PROVIDER_IPAM];
       }
     },
   },

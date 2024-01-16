@@ -6,7 +6,7 @@ import Loading from '@shell/components/Loading';
 import NameNsDescription from '@shell/components/form/NameNsDescription';
 import Tab from '@shell/components/Tabbed/Tab';
 import Tabbed from '@shell/components/Tabbed';
-import { CAPI, HCI } from '@shell/config/types';
+import { CAPI, OB } from '@shell/config/types';
 import ClusterMembershipEditor, { canViewClusterMembershipEditor } from '@shell/components/form/Members/ClusterMembershipEditor';
 import { Banner } from '@components/Banner';
 
@@ -75,7 +75,7 @@ export default {
         name:   `c-cluster-product-resource`,
         params: {
           product:  HARVESTER_MANAGER,
-          resource: HCI.CLUSTER,
+          resource: OB.CLUSTER,
         }
       } : null;
     }

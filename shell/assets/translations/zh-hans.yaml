@@ -181,7 +181,7 @@ nav:
     multiCluster: 全局应用
     legacy: 旧版应用
     configuration: 配置
-    hci: HCI
+    hci: OB
   search:
     placeholder: 输入关键词，搜索集群
     noResults: 没有匹配的集群

@@ -76,10 +76,10 @@ export function getProduct() {
 export function setTitle() {
   const v = getVendor();
 
-  if (v === 'Harvester') {
-    const ico = require(`~shell/assets/images/pl/harvester.png`);
+  if (v === 'oneblock') {
+    const ico = require(`~shell/assets/images/pl/oneblock.png`);
 
-    document.title = 'Harvester';
+    document.title = 'OneBlock';
     const link = document.createElement('link');
 
     link.hid = 'icon';

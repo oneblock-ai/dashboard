@@ -1,5 +1,5 @@
 import {
-  CAPI, MANAGEMENT, NAMESPACE, NORMAN, SNAPSHOT, HCI, LOCAL_CLUSTER
+  CAPI, MANAGEMENT, NAMESPACE, NORMAN, SNAPSHOT, OB, LOCAL_CLUSTER
 } from '@shell/config/types';
 import SteveModel from '@shell/plugins/steve/steve-class';
 import { findBy } from '@shell/utils/array';
@@ -192,7 +192,7 @@ export default class ProvCluster extends SteveModel {
   async goToHarvesterCluster() {
     const harvesterCluster = await this.$dispatch('create', {
       ...this,
-      type: HCI.CLUSTER
+      type: OB.CLUSTER
     });
 
     try {

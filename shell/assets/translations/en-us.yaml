@@ -183,7 +183,7 @@ nav:
     multiCluster: Global Apps
     legacy: Legacy Apps
     configuration: Configuration
-    hci: HCI
+    hci: OB
   search:
     placeholder: Type to search clusters
     noResults: No matching clusters
