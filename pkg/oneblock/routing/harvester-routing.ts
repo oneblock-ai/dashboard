@@ -3,8 +3,6 @@ import { PRODUCT_NAME } from '../config/harvester';
 
 import Root from '../pages/c/_cluster/index.vue';
 import HarvesterSupport from '../pages/c/_cluster/support/index.vue';
-import HarvesterConsoleSerial from '../pages/c/_cluster/console/_uid/serial.vue';
-import HarvesterConsoleVnc from '../pages/c/_cluster/console/_uid/vnc.vue';
 import ListHarvesterResource from '../pages/c/_cluster/_resource/index.vue';
 import HarvesterBrand from '../pages/c/_cluster/brand/index.vue';
 import CreateHarvesterResource from '../pages/c/_cluster/_resource/create.vue';
@@ -22,16 +20,6 @@ const routes: RouteConfig[] = [
     component: HarvesterSupport,
   },
   {
-    name:      `${ PRODUCT_NAME }-c-cluster-console-uid-serial`,
-    path:      `/:product/c/:cluster/console/:uid/serial`,
-    component: HarvesterConsoleSerial,
-  },
-  {
-    name:      `${ PRODUCT_NAME }-c-cluster-console-uid-vnc`,
-    path:      `/:product/c/:cluster/console/:uid/vnc`,
-    component: HarvesterConsoleVnc,
-  },
-  {
     name:      `${ PRODUCT_NAME }-c-cluster-airgapupgrade`,
     path:      `/:product/c/:cluster/airgapupgrade`,
     component: HarvesterAirgapUpdgrade,
@@ -40,11 +28,6 @@ const routes: RouteConfig[] = [
     name:      `${ PRODUCT_NAME }-c-cluster-brand`,
     path:      `/:product/c/:cluster/brand`,
     component: HarvesterBrand,
-  },
-  {
-    name:      `${ PRODUCT_NAME }-c-cluster-alertmanagerconfig-alertmanagerconfigid-receiver`,
-    path:      `/:product/c/:cluster/alertmanagerconfig/:alertmanagerconfigid/receiver`,
-    component: HarvesterAlertmanagerReceiver,
   },
   {
     name:      `${ PRODUCT_NAME }-c-cluster-members`,
