@@ -1,5 +1,5 @@
 <script>
-import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../config/harvester';
+import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../config/product';
 
 export default {
   name: 'HarvesterVFsNum',
@@ -32,3 +32,4 @@ export default {
     </n-link>
   </div>
 </template>
+../config/product

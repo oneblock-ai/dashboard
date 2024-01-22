@@ -1,5 +1,4 @@
 import { imageUrl, fileRequired } from './vm-image';
-import { vmNetworks, vmDisks } from './vm';
 import { dataVolumeSize } from './vm-datavolumes';
 import { backupTarget, ntpServers } from './setting';
 import { volumeSize } from './volume';
@@ -9,8 +8,6 @@ import { ranges } from './network';
 export default {
   imageUrl,
   dataVolumeSize,
-  vmNetworks,
-  vmDisks,
   fileRequired,
   backupTarget,
   ntpServers,

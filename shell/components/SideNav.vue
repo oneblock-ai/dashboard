@@ -259,7 +259,6 @@ export default {
       this.getExplorerGroups(out);
 
       replaceWith(this.groups, ...sortBy(out, ['weight:desc', 'label']));
-
       this.gettingGroups = false;
     },
 

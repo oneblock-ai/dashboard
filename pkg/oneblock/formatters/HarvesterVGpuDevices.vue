@@ -1,5 +1,5 @@
 <script>
-import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../config/harvester';
+import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../config/product';
 
 export default {
   name: 'HarvesterVGpuDevices',
@@ -45,7 +45,10 @@ export default {
 
 <template>
   <div class="vgpudevices">
-    <span v-for="(vgpu, index) in rows.visible" :key="vgpu.name">
+    <span
+      v-for="(vgpu, index) in rows.visible"
+      :key="vgpu.name"
+    >
       <n-link
         :to="vgpu.to"
       >
@@ -72,7 +75,10 @@ export default {
       <template v-slot:popover>
         <div class="vgpu-popup">
           <div>
-            <span v-for="(vgpu, index) in rows.invisible" :key="vgpu.name">
+            <span
+              v-for="(vgpu, index) in rows.invisible"
+              :key="vgpu.name"
+            >
               <n-link
                 :to="vgpu.to"
               >
@@ -105,3 +111,4 @@ export default {
     }
   }
 </style>
+../config/product

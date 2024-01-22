@@ -1338,156 +1338,23 @@ advancedSettings:
     'harv-ntp-servers': Configure NTP server. You can configure multiple IPv4 addresses or host addresses.
 
 typeLabel:
+  ray.io.raycluster: |-
+    {count, plural,
+      one { Machine Learning Cluster }
+      other { Machine Learning Clusters }
+    }
   kubevirt.io.virtualmachine: |-
     {count, plural,
       one { Virtual Machine }
       other { Virtual Machines }
     }
-  harvesterhci.io.virtualmachineimage: |-
+  node: |-
     {count, plural,
-      one { Image }
-      other { Images }
-    }
-  harvesterhci.io.keypair: |-
-    {count, plural,
-      one { SSH Key }
-      other { SSH Keys }
-    }
-  harvesterhci.io.host: |-
-    {count, plural,
-      one { Host }
-      other { Hosts }
-    }
-  harvesterhci.io.networkattachmentdefinition: |-
-    {count, plural,
-      one { VM Network }
-      other { VM Networks }
-    }
-  harvesterhci.io.volume: |-
-    {count, plural,
-      one { Volume }
-      other { Volumes }
-    }
-  harvesterhci.io.user:  |-
-    {count, plural,
-      one { User }
-      other { Users }
+      one { Node }
+      other { Nodes }
     }
   harvesterhci.io.setting:  |-
     {count, plural,
       one { Setting }
       other { Settings }
-    }
-  harvesterhci.io.virtualmachinetemplateversion: |-
-    {count, plural,
-      one { Template }
-      other { Templates }
-    }
-  harvesterhci.io.virtualmachinebackup: |-
-    {count, plural,
-      one { VM Backup }
-      other { VM Backups }
-    }
-  harvesterhci.io.cloudtemplate: |-
-    {count, plural,
-      one { Cloud Config Template }
-      other { Cloud Config Templates }
-    }
-  harvesterhci.io.volumesnapshot: |-
-    {count, plural,
-      one { Volume Snapshot }
-      other { Volume Snapshots }
-    }
-  harvesterhci.io.vmsnapshot: |-
-    {count, plural,
-      one { VM Snapshot }
-      other { VM Snapshots }
-    }
-  network.harvesterhci.io.vlanconfig: |-
-    {count, plural,
-      one { Network Config }
-      other { Network Configs }
-    }
-  harvesterhci.io.monitoring.alertmanagerconfig: |-
-    {count, plural,
-      one { Alertmanager Config }
-      other { Alertmanager Configs }
-    }
-  harvesterhci.io.logging.clusterflow: |-
-    {count, plural,
-      one { Cluster Flow }
-      other { Cluster Flows }
-    }
-  harvesterhci.io.logging.clusteroutput: |-
-    {count, plural,
-      one { Cluster Output }
-      other { Cluster Outputs }
-    }
-  harvesterhci.io.logging.flow: |-
-    {count, plural,
-      one { Flow }
-      other { Flows }
-    }
-  harvesterhci.io.logging.output: |-
-    {count, plural,
-      one { Output }
-      other { Outputs }
-    }
-  harvesterhci.io.storage: |-
-    {count, plural,
-      one { Storage Class }
-      other { Storage Classes }
-    }
-  devices.harvesterhci.io.pcidevice: |-
-    {count, plural,
-      one { PCI Device }
-      other { PCI Devices }
-    }
-  persistentvolumeclaim: |-
-    {count, plural,
-      one { Volume }
-      other { Volumes }
-    }
-  network.harvesterhci.io.clusternetwork: |-
-    {count, plural,
-      one { Cluster Network }
-      other { Cluster Networks }
-    }
-  devices.harvesterhci.io.sriovnetworkdevice: |-
-    {count, plural,
-      one { SR-IOV Network Device }
-      other { SR-IOV Network Devices }
-    }
-
-  devices.harvesterhci.io.sriovgpudevice: |-
-    {count, plural,
-      one { SR-IOV GPU Device }
-      other { SR-IOV GPU Devices }
-    }
-
-  devices.harvesterhci.io.vgpudevice: |-
-    {count, plural,
-      one { vGPU Device }
-      other { vGPU Devices }
-    }
-
-  harvesterhci.io.secret: |-
-    {count, plural,
-      one { Secret }
-      other { Secrets }
-    }
-  harvesterhci.io.blockdevice: |-
-    {count, plural,
-      one { Disk }
-      other { Disks }
-    }
-  loadbalancer.harvesterhci.io.loadbalancer: |-
-    {count, plural,
-      one { Load Balancer }
-      other { Load Balancers }
-    }
-  loadbalancer.harvesterhci.io.ippool: |-
-    {count, plural,
-      one { IP Pool }
-      other { IP Pools }
     }

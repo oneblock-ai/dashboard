@@ -8,7 +8,7 @@ import LabeledSelect from '@shell/components/form/LabeledSelect';
 import { OB } from '../../../../types';
 import { exceptionToErrorsArray } from '@shell/utils/error';
 import { OB as OB_ANNOTATIONS } from '@pkg/oneblock/config/labels-annotations';
-import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../../../../config/harvester';
+import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../../../../config/product';
 
 const IMAGE_METHOD = {
   NEW:   'new',
@@ -341,3 +341,4 @@ export default {
   }
 }
 </style>
+../../../../config/product

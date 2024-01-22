@@ -13,7 +13,7 @@ export default {
 
   computed: {
     warningMessages() {
-      return this.row.warningMessages;
+      return this.row.warningMessages || [];
     },
   },
 };

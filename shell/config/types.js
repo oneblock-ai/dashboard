@@ -99,8 +99,8 @@ export const LIST_WORKLOAD_TYPES = {
 };
 
 export const METRIC = {
-  NODE: 'metrics.k8s.io.nodemetrics',
-  POD:  'metrics.k8s.io.podmetrics',
+  NODE: 'metrics.k8s.io.node',
+  POD:  'metrics.k8s.io.pod',
 };
 
 export const CATALOG = {

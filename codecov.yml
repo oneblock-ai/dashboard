@@ -22,7 +22,7 @@ flags:
   epinio:
     paths: 
     - pkg/epinio
-  harvester:
+  oneblock:
     paths: 
     - pkg/oneblock
   rancher-components:

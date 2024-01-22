@@ -2,7 +2,7 @@ import { findBy } from '@shell/utils/array';
 import { OB } from '../types';
 import { OB_ALLOWED_SETTINGS, OB_SETTING } from '../config/settings';
 import HarvesterResource from './harvester';
-import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../config/harvester';
+import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../config/product';
 
 export default class HciSetting extends HarvesterResource {
   get _availableActions() {

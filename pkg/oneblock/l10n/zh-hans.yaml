@@ -1304,7 +1304,7 @@ typeLabel:
       one { SSH 密钥 }
       other { SSH 密钥 }
     }
-  harvesterhci.io.host: |-
+  node: |-
     {count, plural,
       one { 主机 }
       other { 主机 }

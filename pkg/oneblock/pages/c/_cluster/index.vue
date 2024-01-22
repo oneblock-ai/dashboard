@@ -1,5 +1,5 @@
 <script>
-import { PRODUCT_NAME } from '../../../config/harvester';
+import { PRODUCT_NAME } from '../../../config/product';
 import { OB } from '../../../types';
 
 export default {
@@ -21,3 +21,4 @@ export default {
     This is harvester Dashboard.
   </div>
 </template>
+../../../config/product

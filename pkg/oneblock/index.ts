@@ -1,8 +1,8 @@
 import { importTypes } from '@rancher/auto-import';
 import { IPlugin } from '@shell/core/types';
-import harvesterRoutes from './routing/harvester-routing';
-import harvesterCommonStore from './store/harvester-common';
-import harvesterStore from './store/harvester-store';
+import productRoutes from './routing';
+import CommonStore from './store/oneblock-common';
+import store from './store/oneblock-store/index';
 import customValidators from './validators';
 
 // Init the package
@@ -13,12 +13,12 @@ export default function(plugin: IPlugin) {
   // Provide plugin metadata from package.json
   plugin.metadata = require('./package.json');
 
-  plugin.addProduct(require('./config/harvester'));
+  plugin.addProduct(require('./config/product'));
 
-  plugin.addRoutes(harvesterRoutes);
+  plugin.addRoutes(productRoutes);
 
-  plugin.addDashboardStore(harvesterCommonStore.config.namespace, harvesterCommonStore.specifics, harvesterCommonStore.config);
-  plugin.addDashboardStore(harvesterStore.config.namespace, harvesterStore.specifics, harvesterStore.config, harvesterStore.init);
+  plugin.addDashboardStore(CommonStore.config.namespace, CommonStore.specifics, CommonStore.config);
+  plugin.addDashboardStore(store.config.namespace, store.specifics, store.config, store.init);
 
   plugin.validators = customValidators;
 }

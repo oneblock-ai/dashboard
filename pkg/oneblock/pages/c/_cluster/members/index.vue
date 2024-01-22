@@ -1,6 +1,6 @@
 <script>
 import ExplorerMembers from '@shell/components/ExplorerMembers';
-import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../../../../config/harvester';
+import { PRODUCT_NAME as HARVESTER_PRODUCT } from '../../../../config/product';
 import { MANAGEMENT } from '@shell/config/types';
 export default {
   components: { ExplorerMembers },
@@ -19,4 +19,10 @@ export default {
 };
 </script>
 
-<template><ExplorerMembers :create-location-override="createLocationOverride" v-bind="$attrs" /></template>
+<template>
+  <ExplorerMembers
+    :create-location-override="createLocationOverride"
+    v-bind="$attrs"
+  />
+</template>
+../../../../config/product

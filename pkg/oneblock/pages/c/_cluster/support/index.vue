@@ -78,7 +78,7 @@ export default {
 
   methods: {
     open() {
-      this.$store.commit('harvester-common/toggleBundleModal', true);
+      this.$store.commit('oneblock-common/toggleBundleModal', true);
     }
   }
 };
