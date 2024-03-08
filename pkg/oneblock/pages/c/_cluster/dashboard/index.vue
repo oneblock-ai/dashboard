@@ -372,7 +372,7 @@ export default {
       return {
         name:   'c-cluster-product-resource',
         params: {
-          product:  EXPLORER,
+          product:  'oneblock',
           resource: EVENT,
         }
       };
@@ -568,11 +568,11 @@ export default {
           :label="t('clusterIndexPage.sections.events.label')"
           :weight="2"
         >
-          <!-- <span class="events-table-link">
+          <span class="events-table-link">
             <n-link :to="allEventsLink">
               <span>{{ t('glance.eventsTable') }}</span>
             </n-link>
-          </span> -->
+          </span>
           <EventsTable />
         </Tab>
         <Tab

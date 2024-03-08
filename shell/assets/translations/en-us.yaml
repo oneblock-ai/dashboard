@@ -2288,9 +2288,9 @@ fleet:
 footer:
   docs: Docs
   download: Download CLI
-  forums: Forums
+  gitDiscussion: Github Discussions
   issue: File an Issue
-  slack: Slack
+  discord: Discord
 
 gatekeeperConstraint:
   downloadViolations: Download Violations
@@ -7356,7 +7356,7 @@ support:
   community:
     title: SUSE Rancher provides world-class support
     linksTitle: Community Support
-    learnMore: Find out more about SUSE Rancher Support
+    learnMore: Find out more about 1Block.AI.
     pricing: Contact us for pricing
   subscription:
     haveSupport: Already have support?

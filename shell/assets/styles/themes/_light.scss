@@ -23,22 +23,22 @@ $lightest  : #FFFFFF;
 //color for items that are not enabled
 $disabled  : $medium;
 
-$primary         : #3D98D3;
+$primary         : #5D8BE3;
 $secondary       : $darker;
-$link            : #3D98D3;
+$link            : #5D8BE3;
 
 // Status colors
 $success         : #5D995D;
 $warning         : #DAC342;
 $error           : #F64747;
-$info            : #3D98D3;
+$info            : #5D8BE3;
 
 $contrasted-dark: $darkest !default;
 $contrasted-light: $lightest !default;
 
 // Text selection color for terminal window (we don't want this to change with the primary color)
 // The terminal alway uses a light background, so okay to use a fixed color
-$selected: rgba(#3D98D3, .5);
+$selected: rgba(#5D8BE3, .5);
 
 $drag-over: #DCDEE7;
 

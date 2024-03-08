@@ -4,6 +4,7 @@ import Loading from '@shell/components/Loading';
 import { OB } from '../types';
 import { allHash } from '@shell/utils/promise';
 import { STATE, NAME, AGE } from '@shell/config/table-headers';
+import { SERVICE } from '@shell/config/types';
 
 export default {
   name: 'NoteBooksList',
@@ -12,11 +13,14 @@ export default {
 
   async fetch() {
     const inStore = this.$store.getters['currentProduct'].inStore;
-    const hash = { notebook: this.$store.dispatch(`${ inStore }/findAll`, { type: OB.NOTEBOOK }) };
+    const hash = {
+      notebooks: this.$store.dispatch(`${ inStore }/findAll`, { type: OB.NOTEBOOK }),
+      services:  this.$store.dispatch(`${ inStore }/findAll`, { type: SERVICE })
+    };
 
     const res = await allHash(hash);
 
-    this.rows = res.notebook;
+    this.rows = res.notebooks;
   },
 
   data() {
@@ -26,47 +30,49 @@ export default {
   computed: {
     headers() {
       const TYPE = {
-        name:  'type',
-        label: 'Type',
-        sort:  ['notebookType'],
-        value: 'notebookType'
+        name:      'type',
+        label:     'Type',
+        sort:      ['notebookType'],
+        value:     'notebookType',
+        formatter: 'productTypeIcon',
       };
 
       const GPUs = {
         name:  'gpus',
-        label: 'GPUs',
+        label: 'GPU',
         sort:  ['gpus'],
         value: 'gpus'
       };
 
       const CPUS_LIMIT = {
         name:  'cpusLimit',
-        label: 'CPUs(limits)',
+        label: 'CPU',
         sort:  ['cpusLimit'],
         value: 'cpusLimit'
       };
 
       const MEMORY_LIMIT = {
         name:  'memoryLimit',
-        label: 'Memory(limits)',
+        label: 'Memory',
         sort:  ['memoryLimit'],
         value: 'memoryLimit'
       };
 
       const CONNECT = {
-        name:  'connect',
-        label: 'Connect',
-        sort:  ['connect'],
-        value: 'connect'
+        name:      'connect',
+        label:     'Connect',
+        sort:      ['connect'],
+        formatter: 'Connect',
+        value:     'connectUrl'
       };
 
       const headers = [
         STATE,
         NAME,
         TYPE,
-        GPUs,
         CPUS_LIMIT,
         MEMORY_LIMIT,
+        GPUs,
         CONNECT,
         AGE
       ];

@@ -1,21 +1,15 @@
 <script>
 import Tab from '@shell/components/Tabbed/Tab';
-import SortableTable from '@shell/components/SortableTable';
 import CruResource from '@shell/components/CruResource';
 import UnitInput from '@shell/components/form/UnitInput';
 import ResourceTabs from '@shell/components/form/ResourceTabs';
 import LabeledSelect from '@shell/components/form/LabeledSelect';
-import { LabeledInput } from '@components/Form/LabeledInput';
 import NameNsDescription from '@shell/components/form/NameNsDescription';
 
 import { allHash } from '@shell/utils/promise';
-import { get } from '@shell/utils/object';
 import { OB } from '../types';
-import { STORAGE_CLASS, LONGHORN, PV } from '@shell/config/types';
-import { sortBy } from '@shell/utils/sort';
-import { saferDump } from '@shell/utils/create-yaml';
-// import { InterfaceOption, VOLUME_DATA_SOURCE_KIND } from '../config/harvester-map';
-import { _CREATE } from '@shell/config/query-params';
+import Persistentvolumeclaim from '@pkg/oneblock/components/Persistentvolumeclaim';
+import InfoBox from '@shell/components/InfoBox';
 import CreateEditView from '@shell/mixins/create-edit-view';
 // import { HCI as HCI_ANNOTATIONS } from '@pkg/harvester/config/labels-annotations';
 // import { STATE, NAME, AGE, NAMESPACE } from '@shell/config/table-headers';
@@ -27,10 +21,10 @@ export default {
     Tab,
     UnitInput,
     CruResource,
-    SortableTable,
+    InfoBox,
     ResourceTabs,
+    Persistentvolumeclaim,
     LabeledSelect,
-    LabeledInput,
     NameNsDescription,
   },
 
@@ -39,18 +33,25 @@ export default {
   async fetch() {
     const inStore = this.$store.getters['currentProduct'].inStore;
 
-    await this.$store.dispatch(`${ inStore }/findAll`, { type: OB.NOTEBOOK });
+    allHash({
+      notebooks: this.$store.dispatch(`${ inStore }/findAll`, { type: OB.NOTEBOOK }),
+      settings:  this.$store.dispatch(`${ inStore }/findAll`, { type: OB.SETTING })
+    });
   },
 
   data() {
-    console.log('-----this.value', this.value);
-    // const storage = this.value?.spec?.resources?.requests?.storage || null;
-    // const imageId = get(this.value, `metadata.annotations."${ HCI_ANNOTATIONS.IMAGE_ID }"`);
-    // const source = !imageId ? 'blank' : 'url';
+    const container = this.value.spec.template.spec.containers[0];
+    const limits = container.resources?.limits || { cpu: '', memory: '' };
+    const pvcAnnotation = JSON.parse(this.value.metadata.annotations['oneblock.ai/volumeClaimTemplates'])[0];
+
+    const type = this.value.metadata.labels['ml.oneblock.ai/notebook-type'];
 
     return {
-      type:  '',
-      image: ''
+      container,
+      limits,
+      pvcAnnotation,
+      savePvcHookName: 'savePvcHook',
+      type,
     };
   },
 
@@ -61,7 +62,7 @@ export default {
   computed: {
     typeOption() {
       return [{
-        label: 'JupyterLab',
+        label: 'Jupyter Notebook',
         value: 'jupyter'
       }, {
         label: 'VisualStudio Code',
@@ -70,14 +71,52 @@ export default {
         label: 'RStudio',
         value: 'rstudio'
       }];
-    }
+    },
+
+    images() {
+      const imagesString = this.$store.getters['oneblock/all'](OB.SETTING).find((setting) => setting.id === 'default-notebook-images').default;
+      let images = JSON.parse(imagesString);
+
+      if (this.type) {
+        return images[this.type].map((image) => {
+          return {
+            label: image.containerImage,
+            value: image.containerImage
+          };
+        });
+      }
+
+      images = Object.values(images).map((containerImages) => {
+        const namespaceImage = containerImages.map((image) => {
+          return {
+            label: image.containerImage,
+            value: image.containerImage
+          };
+        });
+
+        return namespaceImage;
+      });
+
+      return images.flat();
+    },
   },
 
   methods: {
     willSave() {
       this.update();
     },
+
+    removePvcForm(hookName) {
+      this.$emit('removePvcForm', hookName);
+    },
+
     update() {
+      if (this.type === 'jupyter') {
+        this.value.spec.serviceType = 'NodePort';
+      } else {
+        delete this.value.spec.serviceType;
+      }
+
       if (this.type) {
         const labels = {
           ...this.value.metadata.labels,
@@ -87,15 +126,36 @@ export default {
         this.value.setLabels(labels);
       }
 
-      // const spec = {
-      //   ...this.value.spec,
-      //   resources: { requests: { storage: this.storage } },
-      //   storageClassName
-      // };
+      if (this.limits.cpu) {
+        this.$set(this.container.resources?.limits, 'cpu', this.limits.cpu);
+      } else {
+        delete this.container.resources?.limits?.cpu;
+      }
+      if (this.limits.memory) {
+        this.$set(this.container.resources?.limits, 'memory', this.limits.memory);
+      } else {
+        delete this.container.resources?.limits?.memory;
+      }
 
-      // this.value.setAnnotations(imageAnnotations);
-      console.log('-----save', this.value);
-      // this.$set(this.value, 'spec', spec);
+      const _containers = [{
+        ...this.container,
+        name: this.value.metadata.name
+      }];
+
+      this.$set(this.value.spec.template.spec, 'containers', _containers);
+
+      this.value.spec.template.spec.volumes[0].persistentVolumeClaim.claimName = this.pvcAnnotation.metadata.name;
+
+      if (!this.pvcAnnotation?.metadata?.name) {
+        this.pvcAnnotation.metadata.name = this.value.metadata.name;
+      }
+
+      const annotations = {
+        ...this.value.metadata.annotations,
+        'oneblock.ai/volumeClaimTemplates': JSON.stringify([this.pvcAnnotation])
+      };
+
+      this.value.setAnnotations(annotations);
     },
   }
 };
@@ -146,10 +206,9 @@ export default {
 
           <div class="col span-6">
             <LabeledSelect
-              v-model="image"
+              v-model="container.image"
               label="Image"
-              :options="typeOption"
-              :disabled="!isCreate"
+              :options="images"
               required
               :mode="mode"
               class="mb-20"
@@ -161,14 +220,12 @@ export default {
         <div class="row">
           <div class="col span-6">
             <UnitInput
-              v-model="cpu"
-              v-int-number
-              label="CPU"
-              :input-exponent="3"
-              :output-modifier="true"
-              :increment="1024"
-              :mode="mode"
+              v-model="container.resources.requests.cpu"
+              label="Request CPU"
+              suffix="C"
               required
+              :output-modifier="true"
+              :mode="mode"
               class="mb-20"
               @input="update"
             />
@@ -176,60 +233,58 @@ export default {
 
           <div class="col span-6">
             <UnitInput
-              v-model="memory"
-              v-int-number
-              label="Memory"
+              v-model="container.resources.requests.memory"
+              label="Request Memory"
               :input-exponent="3"
               :output-modifier="true"
               :increment="1024"
               :mode="mode"
+              suffix="Gi"
               required
               class="mb-20"
               @input="update"
             />
           </div>
         </div>
+
+        <div class="row">
+          <div class="col span-6">
+            <UnitInput
+              v-model="limits.cpu"
+              label="Limits CPU"
+              suffix="C"
+              :delay="0"
+              positive
+              :mode="mode"
+              class="mb-20"
+              @input="update"
+            />
+          </div>
+
+          <div class="col span-6">
+            <UnitInput
+              v-model="limits.memory"
+              label="Limits Memory"
+              :input-exponent="3"
+              :output-modifier="true"
+              :increment="1024"
+              :mode="mode"
+              suffix="Gi"
+              class="mb-20"
+              @input="update"
+            />
+          </div>
+        </div>
+        <InfoBox>
+          <Persistentvolumeclaim
+            v-model="pvcAnnotation"
+            :mode="mode"
+            :register-before-hook="registerBeforeHook"
+            :save-pvc-hook-name="savePvcHookName"
+            @removePvcForm="removePvcForm"
+          />
+        </InfoBox>
       </Tab>
-      <!-- <Tab v-if="!isCreate" name="details" :label="t('harvester.volume.tabs.details')" :weight="2.5" class="bordered-table">
-        <LabeledInput v-model="frontendDisplay" class="mb-20" :mode="mode" :disabled="true" :label="t('harvester.volume.frontend')" />
-        <LabeledInput v-model="attachedNode" class="mb-20" :mode="mode" :disabled="true" :label="t('harvester.volume.attachedNode')" />
-        <LabeledInput v-model="endpoint" class="mb-20" :mode="mode" :disabled="true" :label="t('harvester.volume.endpoint')" />
-        <LabeledSelect
-          v-model="diskTags"
-          :multiple="true"
-          :label="t('harvester.volume.diskTags')"
-          :options="[]"
-          :disabled="true"
-          :mode="mode"
-          class="mb-20"
-        />
-        <LabeledSelect
-          v-model="nodeTags"
-          :multiple="true"
-          :label="t('harvester.volume.nodeTags')"
-          :options="[]"
-          :disabled="true"
-          :mode="mode"
-          class="mb-20"
-        />
-        <LabeledInput v-model="lastBackup" class="mb-20" :mode="mode" :disabled="true" :label="t('harvester.volume.lastBackup')" />
-        <LabeledInput v-model="lastBackupAt" class="mb-20" :mode="mode" :disabled="true" :label="t('harvester.volume.lastBackupAt')" />
-        <LabeledInput v-model="replicasNumber" class="mb-20" :mode="mode" :disabled="true" :label="t('harvester.volume.replicasNumber')" />
-      </Tab>
-      <Tab v-if="!isCreate" name="instances" :label="t('harvester.volume.tabs.snapshots')" :weight="2" class="bordered-table">
-        <SortableTable
-          v-bind="$attrs"
-          :headers="snapshotHeaders"
-          default-sort-by="age"
-          :rows="value.relatedVolumeSnapshotCounts"
-          key-field="_key"
-          v-on="$listeners"
-        />
-      </Tab>
-      <Tab v-if="!isCreate && value.spec.dataSource" name="datasource" :label="t('harvester.volume.tabs.datasource')" :weight="1" class="bordered-table">
-        <LabeledInput v-model="dataSourceKind" class="mb-20" :mode="mode" :disabled="true" :label="t('harvester.volume.kind')" />
-        <LabeledInput v-model="value.spec.dataSource.name" :mode="mode" :disabled="true" :label="t('nameNsDescription.name.label')" />
-      </Tab> -->
     </ResourceTabs>
   </CruResource>
 </template>

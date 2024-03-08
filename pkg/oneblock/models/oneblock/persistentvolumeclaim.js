@@ -4,7 +4,7 @@ import pick from 'lodash/pick';
 import { OB, VOLUME_SNAPSHOT } from '../../types';
 import { PV, LONGHORN } from '@shell/config/types';
 import { DESCRIPTION } from '@shell/config/labels-annotations';
-import { OB as OB_ANNOTATIONS } from '@pkg/oneblock/config/labels-annotations';
+import { ANNOTATIONS } from '@pkg/oneblock/config/labels-annotations';
 import { findBy } from '@shell/utils/array';
 import { get, clone } from '@shell/utils/object';
 import { colorForState } from '@shell/plugins/dashboard-store/resource-class';
@@ -89,7 +89,7 @@ export default class HciPv extends HarvesterResource {
     this.$dispatch(`cleanForNew`, this);
 
     delete this.metadata.finalizers;
-    const keys = [OB_ANNOTATIONS.IMAGE_ID, DESCRIPTION];
+    const keys = [ANNOTATIONS.IMAGE_ID, DESCRIPTION];
 
     this.metadata.annotations = pick(this.metadata.annotations, keys);
   }
@@ -99,8 +99,8 @@ export default class HciPv extends HarvesterResource {
   }
 
   get stateDisplay() {
-    const ownedBy = this?.metadata?.annotations?.[OB_ANNOTATIONS.OWNED_BY];
-    const volumeError = this.relatedPV?.metadata?.annotations?.[OB_ANNOTATIONS.VOLUME_ERROR];
+    const ownedBy = this?.metadata?.annotations?.[ANNOTATIONS.OWNED_BY];
+    const volumeError = this.relatedPV?.metadata?.annotations?.[ANNOTATIONS.VOLUME_ERROR];
     const degradedVolume = volumeError === DEGRADED_ERROR;
     const status = this?.status?.phase === 'Bound' && !volumeError && this.isLonghornVolumeReady ? 'Ready' : 'Not Ready';
 
@@ -119,7 +119,7 @@ export default class HciPv extends HarvesterResource {
 
   // state is similar with stateDisplay, the reason we keep this property is the status of In-use should not be displayed on vm detail page
   get state() {
-    const volumeError = this.relatedPV?.metadata?.annotations?.[OB_ANNOTATIONS.VOLUME_ERROR];
+    const volumeError = this.relatedPV?.metadata?.annotations?.[ANNOTATIONS.VOLUME_ERROR];
     const degradedVolume = volumeError === DEGRADED_ERROR;
     let status = this?.status?.phase === 'Bound' && !volumeError ? 'Ready' : 'Not Ready';
 
@@ -182,7 +182,7 @@ export default class HciPv extends HarvesterResource {
   get attachVM() {
     const allVMs = this.$rootGetters['oneblock/all'](OB.VM);
     const ownedBy =
-      get(this, `metadata.annotations."${ OB_ANNOTATIONS.OWNED_BY }"`) || '';
+      get(this, `metadata.annotations."${ ANNOTATIONS.OWNED_BY }"`) || '';
 
     if (!ownedBy) {
       return null;
@@ -266,7 +266,7 @@ export default class HciPv extends HarvesterResource {
   }
 
   get source() {
-    const imageId = get(this, `metadata.annotations."${ OB_ANNOTATIONS.IMAGE_ID }"`);
+    const imageId = get(this, `metadata.annotations."${ ANNOTATIONS.IMAGE_ID }"`);
 
     return imageId ? 'image' : 'data';
   }

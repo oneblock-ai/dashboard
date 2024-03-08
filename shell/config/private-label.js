@@ -5,7 +5,7 @@ export const STANDARD = 1;
 export const CUSTOM = 2;
 export const DOCS_BASE = 'https://ranchermanager.docs.rancher.com/v2.8';
 
-const STANDARD_VENDOR = 'Rancher';
+const STANDARD_VENDOR = 'OneBlock';
 const STANDARD_PRODUCT = 'Explorer';
 const CUSTOM_VENDOR = {
   suse: 'Rancher Prime',

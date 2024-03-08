@@ -1,7 +1,7 @@
 import {
   NODE,
-  NAMESPACE,
   MANAGEMENT,
+  PVC
 } from '@shell/config/types';
 import { OB } from '../types';
 import {
@@ -31,7 +31,7 @@ export function init($plugin, store) {
 
   store.dispatch('setIsSingleProduct', {
     logo:              require(`@shell/assets/images/pl/oneblock.png`),
-    productNameKey:    'harvester.productLabel',
+    productNameKey:    'oneblock.productLabel',
     getVersionInfo:    (store) => store.getters[`${ PRODUCT_NAME }/byId`]?.(OB.SETTING, 'server-version')?.value || 'unknown',
     afterLoginRoute:   home,
     logoRoute:         home,
@@ -76,6 +76,32 @@ export function init($plugin, store) {
       params: { product: PRODUCT_NAME }
     },
     exact: false,
+  });
+
+  // node page
+  basicType([OB.NODE]);
+  configureType(OB.NODE, {
+    location: {
+      name:   `${ PRODUCT_NAME }-c-cluster-resource`,
+      params: { resource: OB.NODE }
+    },
+    resource:       NODE,
+    resourceDetail: OB.NODE,
+    resourceEdit:   OB.NODE
+  });
+
+  virtualType({
+    ifHaveType: NODE,
+    label:      'Nodes',
+    group:      'Root',
+    name:       OB.NODE,
+    namespaced: true,
+    weight:     99,
+    route:      {
+      name:   `${ PRODUCT_NAME }-c-cluster-resource`,
+      params: { resource: OB.NODE }
+    },
+    exact: false
   });
 
   // machine learning cluster page
@@ -128,31 +154,6 @@ export function init($plugin, store) {
     DESIRED_WORKER_REPLICAS,
     AGE
   ]);
-
-  // node page
-  basicType([OB.NODE]);
-  configureType(OB.NODE, {
-    location: {
-      name:   `${ PRODUCT_NAME }-c-cluster-resource`,
-      params: { resource: OB.NODE }
-    },
-    resource:       NODE,
-    resourceDetail: OB.NODE,
-    resourceEdit:   OB.NODE
-  });
-
-  virtualType({
-    ifHaveType: NODE,
-    label:      'Nodes',
-    group:      'Root',
-    name:       OB.NODE,
-    namespaced: true,
-    route:      {
-      name:   `${ PRODUCT_NAME }-c-cluster-resource`,
-      params: { resource: OB.NODE }
-    },
-    exact: false
-  });
 
   // notebook page
   basicType([OB.NOTEBOOK]);
@@ -209,29 +210,30 @@ export function init($plugin, store) {
   //   exact: false
   // });
 
-  // basicType([OB.VOLUME]);
-  // configureType(OB.VOLUME, {
-  //   location: {
-  //     name:   `${ PRODUCT_NAME }-c-cluster-resource`,
-  //     params: { resource: OB.VOLUME }
-  //   },
-  //   resource:       PVC,
-  //   resourceDetail: OB.VOLUME,
-  //   resourceEdit:   OB.VOLUME
-  // });
-  // virtualType({
-  //   labelKey:   'harvester.volume.label',
-  //   group:      'root',
-  //   ifHaveType: PVC,
-  //   name:       OB.VOLUME,
-  //   namespaced: true,
-  //   weight:     199,
-  //   route:      {
-  //     name:   `${ PRODUCT_NAME }-c-cluster-resource`,
-  //     params: { resource: OB.VOLUME }
-  //   },
-  //   exact: false
-  // });
+  basicType([PVC]);
+  configureType(PVC, {
+    location: {
+      name:   `${ PRODUCT_NAME }-c-cluster-resource`,
+      params: { resource: PVC }
+    },
+    resource:       PVC,
+    resourceDetail: PVC,
+    resourceEdit:   PVC,
+    isCreatable:    false
+  });
+  virtualType({
+    label:      'PersistentVolumeClaims',
+    group:      'root',
+    ifHaveType: PVC,
+    name:       PVC,
+    namespaced: true,
+    weight:     199,
+    route:      {
+      name:   `${ PRODUCT_NAME }-c-cluster-resource`,
+      params: { resource: PVC }
+    },
+    exact: false
+  });
 
   // basicType([OB.IMAGE]);
   // virtualType({
@@ -416,10 +418,36 @@ export function init($plugin, store) {
   basicType(
     [
       OB.ADD_ONS,
-      OB.SETTING
+      OB.SETTING,
+      PVC,
+      OB.QUEUE
     ],
     'advanced'
   );
+
+  configureType(OB.QUEUE, {
+    location: {
+      name:   `${ PRODUCT_NAME }-c-cluster-resource`,
+      params: { resource: OB.QUEUE }
+    },
+    resource:       OB.QUEUE,
+    resourceDetail: OB.QUEUE,
+    resourceEdit:   OB.QUEUE,
+    isCreatable:    true,
+  });
+  virtualType({
+    label:      'Queue',
+    group:      'root',
+    ifHaveType: OB.QUEUE,
+    name:       OB.QUEUE,
+    namespaced: false,
+    weight:     79,
+    route:      {
+      name:   `${ PRODUCT_NAME }-c-cluster-resource`,
+      params: { resource: OB.QUEUE }
+    },
+    exact: false,
+  });
 
   // addvanced => add-ons
   configureType(OB.ADD_ONS, {
@@ -644,30 +672,6 @@ export function init($plugin, store) {
   // });
 
   // settings
-
-  // configureType(OB.STORAGE, {
-  //   location: {
-  //     name:   `${ PRODUCT_NAME }-c-cluster-resource`,
-  //     params: { resource: OB.STORAGE }
-  //   },
-  //   resource:       STORAGE_CLASS,
-  //   resourceDetail: OB.STORAGE,
-  //   resourceEdit:   OB.STORAGE,
-  //   isCreatable:    true,
-  // });
-  // virtualType({
-  //   labelKey:   'harvester.storage.title',
-  //   group:      'root',
-  //   ifHaveType: STORAGE_CLASS,
-  //   name:       OB.STORAGE,
-  //   namespaced: false,
-  //   weight:     79,
-  //   route:      {
-  //     name:   `${ PRODUCT_NAME }-c-cluster-resource`,
-  //     params: { resource: OB.STORAGE }
-  //   },
-  //   exact: false,
-  // });
 
   // virtualType({
   //   label:      'PCI Devices',

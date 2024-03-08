@@ -922,7 +922,7 @@ harvester:
         title: 访问内嵌的 Longhorn UI
         titleDescription: 仅支持使用内嵌的 Longhorn UI 来进行调试和验证。
     community:
-      learnMore: 进一步了解 SUSE Harvester 支持
+      learnMore: 进一步了解 1Block.AI 支持
       pricing: 联系我们获取价格。
 
   namespace:

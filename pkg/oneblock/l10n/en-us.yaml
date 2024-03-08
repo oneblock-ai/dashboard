@@ -32,8 +32,25 @@ asyncButton:
     success: Restarted
     waiting: Restarting&hellip;
 
+oneblock:
+  productLabel: 'OneBlock'
+  support:
+    title: Oneblock Support
+    kubeconfig:
+      title: Download KubeConfig
+      titleDescription: Download kubeconfig for debugging.
+    internal:
+      rancher:
+        title: Access Embedded Rancher UI
+        titleDescription: We only support to use the embedded Rancher dashboard for debugging and validation purpose. For Rancher's multi-cluster and multi-tenant integration, please refer to the docs <a target="_blank" href="https://docs.harvesterhci.io/v1.2/rancher/index" rel="noopener noreferrer nofollow">here</a>.
+      longhorn:
+        title: Access Embedded Longhorn UI
+        titleDescription: We only support to use the embedded Longhorn UI for debugging and validation purpose.
+    community:
+      learnMore: Find out more about 1Block.AI.
+      pricing: Contact us for pricing
+
 harvester:
-  productLabel: 'Harvester'
   modal:
     backup:
       success: 'Backup { backUpName } has been initiated.'
@@ -923,22 +940,6 @@ harvester:
     templateType: Template Type
     userData: User Data
     networkData: Network Data
- 
-  support:
-    title: Harvester Support
-    kubeconfig:
-      title: Download KubeConfig
-      titleDescription: Download kubeconfig for debugging.
-    internal:
-      rancher:
-        title: Access Embedded Rancher UI
-        titleDescription: We only support to use the embedded Rancher dashboard for debugging and validation purpose. For Rancher's multi-cluster and multi-tenant integration, please refer to the docs <a target="_blank" href="https://docs.harvesterhci.io/v1.2/rancher/index" rel="noopener noreferrer nofollow">here</a>.
-      longhorn:
-        title: Access Embedded Longhorn UI
-        titleDescription: We only support to use the embedded Longhorn UI for debugging and validation purpose.
-    community:
-      learnMore: Find out more about SUSE Harvester support
-      pricing: Contact us for pricing
 
   namespace:
     label: Namespaces

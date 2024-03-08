@@ -21,10 +21,10 @@ export default {
   data() {
     return {
       options: {
-        'footer.docs':   'https://docs.harvesterhci.io',
-        'footer.forums': 'https://forums.rancher.com/c/harvester/',
-        'footer.slack':  'https://slack.rancher.io',
-        'footer.issue':  'https://github.com/harvester/harvester/issues/new/choose'
+        'footer.docs':          'https://docs.1block.ai/',
+        'footer.gitDiscussion': 'https://github.com/oneblock-ai/oneblock/discussions',
+        'footer.discord':       'https://discord.com/invite/5BnNqC5ccB',
+        'footer.issue':         'https://github.com/oneblock-ai/oneblock/issues/new/choose'
       }
     };
   },
@@ -41,7 +41,7 @@ export default {
     },
 
     title() {
-      return 'harvester.support.title';
+      return 'oneblock.support.title';
     },
 
     showSupportBundle() {
@@ -96,18 +96,18 @@ export default {
             class="box mb-20 box-primary"
           >
             <h2>
-              {{ t('harvester.modal.bundle.title') }}
+              {{ t('oneblock.modal.bundle.title') }}
             </h2>
             <div>
               <p class="pb-10">
-                {{ t('harvester.modal.bundle.titleDescription') }}
+                {{ t('oneblock.modal.bundle.titleDescription') }}
               </p>
               <button
                 class="btn role-secondary btn-sm"
                 type="button"
                 @click="open"
               >
-                {{ t('harvester.modal.bundle.title') }}
+                {{ t('oneblock.modal.bundle.title') }}
               </button>
             </div>
           </div>
@@ -116,18 +116,18 @@ export default {
             :class="{'mb-20': dev }"
           >
             <h2>
-              {{ t('harvester.support.kubeconfig.title') }}
+              {{ t('oneblock.support.kubeconfig.title') }}
             </h2>
             <div>
               <p class="pb-10">
-                {{ t('harvester.support.kubeconfig.titleDescription') }}
+                {{ t('oneblock.support.kubeconfig.titleDescription') }}
               </p>
               <button
                 class="btn role-secondary btn-sm"
                 type="button"
                 @click="currentCluster.downloadKubeConfig()"
               >
-                {{ t('harvester.support.kubeconfig.title') }}
+                {{ t('oneblock.support.kubeconfig.title') }}
               </button>
             </div>
           </div>
@@ -141,12 +141,12 @@ export default {
                   rel="nofollow noopener noreferrer"
                   target="_blank"
                   :href="rancherLink"
-                >{{ t('harvester.support.internal.rancher.title') }} <i class="icon icon-external-link" /></a>
+                >{{ t('oneblock.support.internal.rancher.title') }} <i class="icon icon-external-link" /></a>
               </h2>
               <div>
                 <p class="warning">
                   <t
-                    k="harvester.support.internal.rancher.titleDescription"
+                    k="oneblock.support.internal.rancher.titleDescription"
                     :raw="true"
                   />
                 </p>
@@ -158,12 +158,12 @@ export default {
                   rel="nofollow noopener noreferrer"
                   target="_blank"
                   :href="longhornLink"
-                >{{ t('harvester.support.internal.longhorn.title') }} <i class="icon icon-external-link" /></a>
+                >{{ t('oneblock.support.internal.longhorn.title') }} <i class="icon icon-external-link" /></a>
               </h2>
               <div>
                 <p class="warning">
                   <t
-                    k="harvester.support.internal.longhorn.titleDescription"
+                    k="oneblock.support.internal.longhorn.titleDescription"
                     :raw="true"
                   />
                 </p>
@@ -176,16 +176,11 @@ export default {
         </div>
         <div class="external">
           <a
-            href="https://www.suse.com/suse-harvester/support-matrix/all-supported-versions"
+            href="https://1block.ai/"
             target="_blank"
             rel="noopener noreferrer nofollow"
-          >{{ t('harvester.support.community.learnMore') }} <i class="icon icon-external-link" /></a>
-          or
-          <a
-            href="https://www.suse.com/products/harvester/"
-            target="_blank"
-            rel="noopener noreferrer nofollow"
-          >{{ t('harvester.support.community.pricing') }} <i class="icon icon-external-link" /></a>
+          >{{ t('oneblock.support.community.learnMore') }}
+          </a>
         </div>
       </div>
     </IndentedPanel>
