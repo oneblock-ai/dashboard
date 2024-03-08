@@ -1,5 +1,5 @@
-# 1Block Dashboard
-[![Build Status](https://github.com/WuJun2016/OB-dashboard/actions/workflows/test.yaml/badge.svg)](https://github.com/WuJun2016/OB-dashboard/actions/workflows/test.yaml)
+# 1Block.AI Dashboard
+[![main-build](https://github.com/oneblock-ai/dashboard/actions/workflows/build.yaml/badge.svg)](https://github.com/oneblock-ai/dashboard/actions/workflows/build.yaml)
 
 
 ## Running for Development

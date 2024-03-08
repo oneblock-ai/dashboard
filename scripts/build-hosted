@@ -21,7 +21,7 @@ if [[ "${DIR}" == "main" ]]; then
   DIR="latest"
 fi
 
-BASE=${BASE:-https://1block.oss-cn-beijing.aliyuncs.com/dashboard/${DIR}}
+BASE=${BASE:-https://releases.1block.ai/dashboard/${DIR}}
 
 echo "Building for ${BASE}..."
 
