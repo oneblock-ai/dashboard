@@ -4,7 +4,7 @@ import { MANAGEMENT } from '@shell/config/types';
 import { OB_ALLOWED_SETTINGS } from '../config/settings';
 import { Banner } from '@components/Banner';
 import Loading from '@shell/components/Loading';
-import { VIEW_IN_API } from '@shell/store/prefs';
+// import { VIEW_IN_API } from '@shell/store/prefs';
 
 export default {
   components: { Banner, Loading },

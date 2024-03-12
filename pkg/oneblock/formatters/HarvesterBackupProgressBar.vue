@@ -51,7 +51,7 @@ export default {
         return null;
       }
       const title = this.t(`harvester.${ this.value.type }.progress.details`);
-      const rows = this.value.details.volumes.map(v => `<br><b>${ v.volumeName }</b>:  ${ v.progress || 0 }%`);
+      const rows = this.value.details.volumes.map((v) => `<br><b>${ v.volumeName }</b>:  ${ v.progress || 0 }%`);
 
       return rows.reduce((acc, r) => acc + r, `${ title }<br>`);
     },
@@ -60,7 +60,10 @@ export default {
 </script>
 
 <template>
-  <div v-if="isEmpty" class="empty">
+  <div
+    v-if="isEmpty"
+    class="empty"
+  >
     <span class="text-muted">
       &mdash;
     </span>

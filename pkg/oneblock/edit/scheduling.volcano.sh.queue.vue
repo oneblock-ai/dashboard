@@ -12,7 +12,6 @@ import { allHash } from '@shell/utils/promise';
 import { OB } from '../types';
 import CreateEditView from '@shell/mixins/create-edit-view';
 import { ANNOTATIONS } from '@pkg/oneblock/config/labels-annotations';
-// import { STATE, NAME, AGE, NAMESPACE } from '@shell/config/table-headers';
 
 export default {
   name: 'QueueEdit',
@@ -48,6 +47,13 @@ export default {
       supportedNamespaces = supportedNamespacesStr.split(',');
     }
 
+    if (!this.value.spec.capability) {
+      this.value.spec.capability = {
+        cpu:    '',
+        memory: ''
+      };
+    }
+
     return { supportedNamespaces };
   },
 
@@ -79,6 +85,21 @@ export default {
   methods: {
     willSave() {
       this.update();
+      if (!this.supportedNamespaces.length) {
+        this.errors.push(this.t('validation.required', { key: 'Supported Namespaces' }, true));
+      }
+
+      if (!this.value.spec.capability?.memory) {
+        delete this.value.spec.capability.memory;
+      }
+
+      if (!this.value.spec.capability?.cpu) {
+        delete this.value.spec.capability.cpu;
+      }
+
+      if (this.errors.length > 0) {
+        return Promise.reject(this.errors);
+      }
     },
 
     update() {
@@ -138,8 +159,9 @@ export default {
             <LabeledSelect
               v-model="supportedNamespaces"
               :multiple="true"
-              label-key="nameNsDescription.namespace.label"
+              label="Supported Namespaces"
               :mode="mode"
+              required
               :options="namespaceOptions"
               @input="update"
             />
@@ -162,9 +184,8 @@ export default {
           <div class="col span-6">
             <UnitInput
               v-model="value.spec.capability.cpu"
-              label="Limit CPU"
+              label="CPU Limit"
               suffix="C"
-              required
               :output-modifier="true"
               :mode="mode"
               class="mb-20"
@@ -175,13 +196,12 @@ export default {
           <div class="col span-6">
             <UnitInput
               v-model="value.spec.capability.memory"
-              label="Limit Memory"
+              label="Memory Limit"
               :input-exponent="3"
               :output-modifier="true"
               :increment="1024"
               :mode="mode"
               suffix="Gi"
-              required
               class="mb-20"
               @input="update"
             />

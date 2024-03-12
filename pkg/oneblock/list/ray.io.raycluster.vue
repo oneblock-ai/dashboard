@@ -77,7 +77,7 @@ export default {
       <td>
         <span>{{ row.nameDisplay }}</span>
         <n-link
-          :to="{ name: 'oneblock-c-cluster-raydashboard'}"
+          :to="{ name: 'oneblock-c-cluster-raydashboard', params: { clusterName: row.name, namespace: row.namespace } }"
         >
           Manage
         </n-link>

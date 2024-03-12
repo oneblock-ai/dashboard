@@ -89,10 +89,6 @@ export default class OBRayCluster extends HarvesterResource {
                     }
                   ],
                   resources: {
-                    limits: {
-                      cpu:    '',
-                      memory: ''
-                    },
                     requests: {
                       cpu:    '',
                       memory: ''
@@ -119,7 +115,7 @@ export default class OBRayCluster extends HarvesterResource {
         workerGroupSpecs: [
           {
             groupName:      'default-worker',
-            maxReplicas:    10,
+            maxReplicas:    5,
             minReplicas:    1,
             rayStartParams: {},
             replicas:       1,
@@ -149,10 +145,6 @@ export default class OBRayCluster extends HarvesterResource {
                     },
                     name:      'ray-worker',
                     resources: {
-                      limits: {
-                        cpu:    '',
-                        memory: ''
-                      },
                       requests: {
                         cpu:    '',
                         memory: ''
