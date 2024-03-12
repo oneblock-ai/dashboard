@@ -436,7 +436,7 @@ export function init($plugin, store) {
     isCreatable:    true,
   });
   virtualType({
-    label:      'Queue',
+    label:      'Scheduling Queues',
     group:      'root',
     ifHaveType: OB.QUEUE,
     name:       OB.QUEUE,

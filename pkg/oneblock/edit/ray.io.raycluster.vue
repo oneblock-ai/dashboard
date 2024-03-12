@@ -39,10 +39,15 @@ export default {
   async fetch() {
     const inStore = this.$store.getters['currentProduct'].inStore;
 
-    allHash({
-      clusters: this.$store.dispatch(`${ inStore }/findAll`, { type: OB.ML_CLUSTER }),
-      queues:   this.$store.dispatch(`${ inStore }/findAll`, { type: OB.QUEUE }),
+    const hash = await allHash({
+      clusters:      this.$store.dispatch(`${ inStore }/findAll`, { type: OB.ML_CLUSTER }),
+      queues:        this.$store.dispatch(`${ inStore }/findAll`, { type: OB.QUEUE }),
+      defaultConfig: this.$store.dispatch(`${ inStore }/request`, { url: 'v1-public/ui' })
     });
+
+    this.defaultConfig = hash.defaultConfig;
+    this.value.spec.rayVersion = this.defaultConfig['default-ray-cluster-image'];
+    this.queueName = this.$store.getters['oneblock/all'](OB.QUEUE).find((N) => N.isDefaultQueue)?.metadata.name || '';
   },
 
   data() {
@@ -55,11 +60,14 @@ export default {
 
     const workerGroupSpecs = this.value?.spec?.workerGroupSpecs || [];
     const workerGroupSpecsResource = workerGroupSpecs[0]?.template?.spec.containers[0]?.resources;
+    const gpu = workerGroupSpecsResource?.requests?.['nvidia.com/gpu'] || 0;
 
     const autoscalerOptions = this.value?.spec?.autoscalerOptions;
 
     return {
+      defaultConfig:   {},
       schedulerType:   ['volcano'],
+      gpu,
       enableGCSFaultTolerance,
       headGroupSpecResource,
       headGroupSpec,
@@ -82,6 +90,7 @@ export default {
         const namespacesStr = N.metadata.annotations?.[ANNOTATIONS.SUPPORTED_NAMESPACES];
 
         // TODO, move to model
+        console.log(namespacesStr);
         if (namespacesStr === 'all') {
           return true;
         } else if (namespacesStr) {
@@ -119,7 +128,19 @@ export default {
 
   methods: {
     willSave() {
+      this.errors = [];
       this.update();
+
+      if (this.workerGroupSpecsResource.requests.memory === '' || this.headGroupSpecResource.requests.memory === '') {
+        this.errors.push(this.t('validation.required', { key: 'Memory' }, true));
+      }
+      if (this.workerGroupSpecsResource.requests.cpu === '' || this.headGroupSpecResource.requests.cpu === '') {
+        this.errors.push(this.t('validation.required', { key: 'CPU' }, true));
+      }
+
+      if (this.errors.length > 0) {
+        return Promise.reject(this.errors);
+      }
     },
 
     removePvcForm(hookName) {
@@ -143,17 +164,17 @@ export default {
         'oneblock.ai/volumeClaimTemplates':   JSON.stringify([this.pvcAnnotation])
       };
 
+      if (!this.gpu) {
+        delete this.value.spec.workerGroupSpecs[0].template.spec.containers[0].resources.requests['nvidia.com/gpu'];
+        delete this.value.spec.workerGroupSpecs[0].template.spec.runtimeClassName;
+      } else {
+        this.value.spec.workerGroupSpecs[0].template.spec.containers[0].resources.requests['nvidia.com/gpu'] = this.gpu;
+        this.value.spec.workerGroupSpecs[0].template.spec.runtimeClassName = 'nvidia';
+      }
+
       this.value.setAnnotations(annotations);
     },
   },
-
-  watch: {
-    supportedNamespaces(neu, old) {
-      if (neu.includes('all')) { // TODO
-        // this.supportedNamespaces = ['all'];
-      }
-    }
-  }
 };
 </script>
 
@@ -181,8 +202,8 @@ export default {
       :mode="mode"
     >
       <Tab
-        name="basic"
-        label="Basics"
+        name="headGroup"
+        label="Head Group"
         :weight="3"
         class="bordered-table"
       >
@@ -190,7 +211,7 @@ export default {
           <div class="col span-6">
             <LabeledInput
               v-model="value.spec.rayVersion"
-              label="Ray Version"
+              label="Default Image"
               required
               :mode="mode"
               @input="update"
@@ -198,8 +219,36 @@ export default {
           </div>
         </div>
 
+        <div class="row mb-20">
+          <div class="col span-6">
+            <UnitInput
+              v-model="headGroupSpecResource.requests.cpu"
+              label="CPU"
+              suffix="C"
+              required
+              :output-modifier="true"
+              :mode="mode"
+              @input="update"
+            />
+          </div>
+          <div class="col span-6">
+            <UnitInput
+              v-model="headGroupSpecResource.requests.memory"
+              label="Memory"
+              :input-exponent="3"
+              :output-modifier="true"
+              :increment="1024"
+              :mode="mode"
+              suffix="Gi"
+              required
+              @input="update"
+            />
+          </div>
+        </div>
+
         <div class="row">
           <InfoBox class="mb-0">
+            <h3>Persistent Log Volume</h3>
             <Persistentvolumeclaim
               v-model="pvcAnnotation"
               :mode="mode"
@@ -214,65 +263,6 @@ export default {
           class="col span-12 advanced"
           :mode="mode"
         >
-          <div class="row">
-            <div class="col span-6">
-              <UnitInput
-                v-model="headGroupSpecResource.requests.cpu"
-                label="Request CPU"
-                suffix="C"
-                required
-                :output-modifier="true"
-                :mode="mode"
-                class="mb-20"
-                @input="update"
-              />
-            </div>
-
-            <div class="col span-6">
-              <UnitInput
-                v-model="headGroupSpecResource.requests.memory"
-                label="Request Memory"
-                :input-exponent="3"
-                :output-modifier="true"
-                :increment="1024"
-                :mode="mode"
-                suffix="Gi"
-                required
-                class="mb-20"
-                @input="update"
-              />
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col span-6">
-              <UnitInput
-                v-model="headGroupSpecResource.limits.cpu"
-                label="Limits CPU"
-                suffix="C"
-                required
-                :output-modifier="true"
-                :mode="mode"
-                class="mb-20"
-                @input="update"
-              />
-            </div>
-
-            <div class="col span-6">
-              <UnitInput
-                v-model="headGroupSpecResource.limits.memory"
-                label="Limits Memory"
-                :input-exponent="3"
-                :output-modifier="true"
-                :increment="1024"
-                :mode="mode"
-                suffix="Gi"
-                required
-                class="mb-20"
-                @input="update"
-              />
-            </div>
-          </div>
           <div class="row">
             <div class="col span-6">
               <Checkbox
@@ -299,14 +289,37 @@ export default {
       </Tab>
 
       <Tab
-        name="Worker"
-        label="Worker"
+        name="workerGroup"
+        label="Worker Group"
         class="bordered-table"
       >
         <div class="row mb-20">
           <div class="col span-6">
             <LabeledInput
-              v-model="workerGroupSpecs[0].minreplicas"
+              v-model="workerGroupSpecs[0].groupName"
+              label="Group Name"
+              required
+              :mode="mode"
+              @input="update"
+            />
+          </div>
+
+          <div class="col span-6">
+            <LabeledInput
+              v-model="workerGroupSpecs[0].replicas"
+              v-int-number
+              label="Replicas"
+              required
+              :mode="mode"
+              @input="update"
+            />
+          </div>
+        </div>
+
+        <div class="row mb-20">
+          <div class="col span-6">
+            <LabeledInput
+              v-model="workerGroupSpecs[0].minReplicas"
               v-int-number
               label="Min Replicas"
               required
@@ -329,91 +342,43 @@ export default {
 
         <div class="row mb-20">
           <div class="col span-6">
-            <LabeledInput
-              v-model="workerGroupSpecs[0].groupName"
-              label="groupName"
+            <UnitInput
+              v-model="workerGroupSpecsResource.requests.cpu"
+              label="CPU"
+              suffix="C"
               required
+              :output-modifier="true"
               :mode="mode"
               @input="update"
             />
           </div>
 
           <div class="col span-6">
-            <LabeledInput
-              v-model="workerGroupSpecs[0].replicas"
-              v-int-number
-              label="Replicas"
-              required
+            <UnitInput
+              v-model="workerGroupSpecsResource.requests.memory"
+              label="Memory"
+              :input-exponent="3"
+              :output-modifier="true"
+              :increment="1024"
               :mode="mode"
+              suffix="Gi"
+              required
               @input="update"
             />
           </div>
         </div>
 
-        <AdvancedSection
-          class="col span-12 advanced"
-          :mode="mode"
-        >
-          <div class="row">
-            <div class="col span-6">
-              <UnitInput
-                v-model="workerGroupSpecsResource.requests.cpu"
-                label="Request CPU"
-                suffix="C"
-                required
-                :output-modifier="true"
-                :mode="mode"
-                class="mb-20"
-                @input="update"
-              />
-            </div>
-
-            <div class="col span-6">
-              <UnitInput
-                v-model="workerGroupSpecsResource.requests.memory"
-                label="Request Memory"
-                :input-exponent="3"
-                :output-modifier="true"
-                :increment="1024"
-                :mode="mode"
-                suffix="Gi"
-                required
-                class="mb-20"
-                @input="update"
-              />
-            </div>
+        <div class="row">
+          <div class="col span-6">
+            <LabeledInput
+              v-model="gpu"
+              v-int-number
+              label="GPU"
+              :mode="mode"
+              @input="update"
+            />
           </div>
-
-          <div class="row">
-            <div class="col span-6">
-              <UnitInput
-                v-model="workerGroupSpecsResource.limits.cpu"
-                label="Limits CPU"
-                suffix="C"
-                required
-                :output-modifier="true"
-                :mode="mode"
-                class="mb-20"
-                @input="update"
-              />
-            </div>
-
-            <div class="col span-6">
-              <UnitInput
-                v-model="workerGroupSpecsResource.limits.memory"
-                label="Limits Memory"
-                :input-exponent="3"
-                :output-modifier="true"
-                :increment="1024"
-                :mode="mode"
-                suffix="Gi"
-                required
-                class="mb-20"
-                @input="update"
-              />
-            </div>
-          </div>
-        </AdvancedSection>
+        </div>
       </Tab>
 
       <Tab

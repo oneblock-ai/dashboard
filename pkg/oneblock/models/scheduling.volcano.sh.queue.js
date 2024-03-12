@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import HarvesterResource from './harvester';
 import { set } from '@shell/utils/object';
-// import { SERVICE } from '@shell/config/types';
 
 export default class HciQueue extends HarvesterResource {
   applyDefaults() {

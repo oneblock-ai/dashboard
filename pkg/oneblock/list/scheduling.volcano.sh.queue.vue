@@ -41,7 +41,7 @@ export default {
 
       const isDefaultQueue = {
         name:      'isDefaultQueue',
-        label:     'DefaultQueue',
+        label:     'Default',
         sort:      ['isDefaultQueue'],
         formatter: 'Checked',
         value:     'isDefaultQueue'
@@ -49,7 +49,7 @@ export default {
 
       const STATUS_STATE = {
         name:  'status.state',
-        label: 'State',
+        label: 'Status',
         sort:  ['status.state'],
         value: 'status.state',
       };

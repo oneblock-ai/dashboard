@@ -1,5 +1,5 @@
 export const ANNOTATIONS = {
-  SUPPORTED_NAMESPACES:   'metadata.annotations.scheduling.oneblock.ai/supportedNamespaces',
+  SUPPORTED_NAMESPACES:   'scheduling.oneblock.ai/supportedNamespaces',
   RAY_CLUSTER_ENABLE_GCS: 'ml.oneblock.ai/rayClusterEnableGCS',
 
   CURRENT_IP:                   'rke2.io/internal-ip',

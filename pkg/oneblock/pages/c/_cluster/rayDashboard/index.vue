@@ -5,7 +5,10 @@ export default {
   components: {},
 
   data() {
-    const dashboardUrl = `${ window.location.origin }/api/v1/namespaces/oneblock-public/services/http:public-ray-cluster-head-svc:dashboard/proxy/#/overview`;
+    const clusterName = this.$route.params.clusterName;
+    const namespace = this.$route.params.namespace;
+
+    const dashboardUrl = `${ window.location.origin }/api/v1/namespaces/${ namespace }/services/http:${ clusterName }-head-svc:dashboard/proxy/#/overview`;
 
     return { dashboardUrl };
   },
@@ -30,5 +33,4 @@ export default {
   padding: 0px;
   height: 100px;
 }
-
 </style>
